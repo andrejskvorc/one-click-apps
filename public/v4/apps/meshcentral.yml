@@ -2,7 +2,8 @@ captainVersion: 4
 
 services:
     $$cap_appname:
-        image: ghcr.io/ylianst/meshcentral:latest
+        # Koristi tvoj custom override image
+        image: andrejskvorc/meshcentral:caprover
         containerHttpPort: 80
         instanceCount: 1
 
@@ -14,7 +15,7 @@ services:
             HOSTNAME: $$cap_appname.$$cap_root_domain
             PORT: '80'
 
-            # 🔥 KLJUČNO (ispravno)
+            # 🔥 KLJUČNO: tvoja nova ENV var
             TLSOFFLOAD: '127.0.0.1'
 
             # Domain + SSL
