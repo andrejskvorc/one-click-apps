@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/caprover/one-click-apps.git"
+    "url": "git+https://github.com/andrejskvorc/one-click-apps.git"
   },
-  "author": "",
+  "author": "andrejskvorc",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/caprover/one-click-apps/issues"
+    "url": "https://github.com/andrejskvorc/one-click-apps/issues"
   },
-  "homepage": "https://github.com/caprover/one-click-apps",
+  "homepage": "https://github.com/andrejskvorc/one-click-apps",
   "dependencies": {
     "fs-extra": "^9.0.1",
     "gh-pages": "^6.3.0",

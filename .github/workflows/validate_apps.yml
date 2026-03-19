@@ -1,3 +1,8 @@
+# <summary>
+# GitHub Actions workflow that validates CapRover One-Click Apps.
+# Triggers on push and pull_request events targeting the 'master' branch.
+# Uses up-to-date action versions (v4) and Node.js v20 for execution.
+# </summary>
 name: Validate One Click Apps
 
 on:
@@ -12,8 +17,8 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v1
-            - uses: actions/setup-node@v1
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
               with:
                   node-version: 20
             - run: npm ci && npm run validate_apps && npm run formatter
