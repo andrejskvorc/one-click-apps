@@ -1,0 +1,50 @@
+captainVersion: 4
+services:
+    $$cap_appname:
+        image: ghcr.io/ylianst/meshcentral:latest-postgresql
+        depends_on:
+            - $$cap_appname-db
+        environment:
+            NODE_ENV: 'production'
+            CERT: '$$cap_root_domain'
+            DB_TYPE: 'postgres'
+            DB_CONNECTION_STRING: 'postgres://$$cap_pg_user:$$cap_pg_pass@$$cap_appname-db:5432/meshcentral'
+            AGENT_PORT: '4433'
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - $$cap_appname-data:/opt/meshcentral/meshcentral-data
+            - $$cap_appname-files:/opt/meshcentral/meshcentral-files
+            - $$cap_appname-backups:/opt/meshcentral/meshcentral-backups
+    $$cap_appname-db:
+        image: postgres:15
+        restart: always
+        environment:
+            POSTGRES_USER: '$$cap_pg_user'
+            POSTGRES_PASSWORD: '$$cap_pg_pass'
+            POSTGRES_DB: meshcentral
+        volumes:
+            - $$cap_appname-db-data:/var/lib/postgresql/data
+volumes:
+    $$cap_appname-data:
+    $$cap_appname-files:
+    $$cap_appname-backups:
+    $$cap_appname-db-data:
+caproverOneClickApp:
+    displayName: MeshCentral SQL Backend
+    description: 'Deploy MeshCentral with optional internal PostgreSQL server'
+    documentation: 'https://github.com/Ylianst/MeshCentral'
+    variables:
+        - id: '$$cap_pg_user'
+          label: 'PostgreSQL User'
+          defaultValue: 'meshuser'
+          validRegex: '/^.+$/'
+        - id: '$$cap_pg_pass'
+          label: 'PostgreSQL Password'
+          validRegex: '/^.+$/'
+    instructions:
+        start: |-
+            This deploys MeshCentral with an embedded PostgreSQL server. If you have an external SQL instance, update DB_CONNECTION_STRING after deployment.
+        end: |-
+            MeshCentral with SQL backend is deployed at https://$$cap_appname.$$cap_root_domain
