@@ -1,7 +1,6 @@
 # <summary>
 # GitHub Actions workflow for validating CapRover One-Click Apps.
-# Added 'workflow_dispatch' to allow manual triggering from the GitHub UI, 
-# which is the best way to force an initial run and resolve 'no status' badges.
+# Updated to resolve Node.js 20 deprecation warnings by forcing actions to run on Node 24.
 # </summary>
 name: Validate One Click Apps
 
@@ -13,6 +12,13 @@ on:
         branches: 
             - master
     workflow_dispatch:
+
+# <summary>
+# Global environment variables for the workflow.
+# Forces underlying GitHub Actions to use Node.js 24 instead of the deprecated Node.js 20.
+# </summary>
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
     validate:
@@ -26,12 +32,12 @@ jobs:
               uses: actions/checkout@v4
 
             # <summary>
-            # Sets up Node.js v20 and npm caching.
+            # Sets up Node.js environment using version 24 and configures npm caching.
             # </summary>
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 24
                   cache: 'npm'
 
             # <summary>
@@ -41,7 +47,7 @@ jobs:
               run: npm ci
 
             # <summary>
-            # Executes the validation script.
+            # Executes the validation and formatting scripts.
             # </summary>
             - name: Validate Apps
               run: npm run validate_apps && npm run formatter
