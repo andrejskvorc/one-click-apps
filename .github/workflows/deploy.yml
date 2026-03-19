@@ -1,7 +1,7 @@
 # <summary>
 # GitHub Actions workflow for publishing CapRover One-Click Apps.
-# Modernized to Node.js 24, includes manual trigger, and grants explicit write permissions
-# so the internal bash script can push to the gh-pages branch using the default GITHUB_TOKEN.
+# The Node 24 environment variable is now placed explicitly at the job level
+# to guarantee it overwrites default v4 action settings.
 # </summary>
 name: Publish One Click Apps
 
@@ -11,50 +11,34 @@ on:
             - master
     workflow_dispatch:
 
-# <summary>
-# Forces underlying GitHub Actions to use Node.js 24.
-# </summary>
-env:
-    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-# <summary>
-# Explicitly grants write permissions to the repository contents.
-# This is required for the bash script to successfully push the generated files.
-# </summary>
-permissions:
-    contents: write
-
 jobs:
     publish:
         runs-on: ubuntu-latest
+        
+        # <summary>
+        # Job-level permissions and environment variables.
+        # contents: write is required for the push to gh-pages.
+        # FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 removes the deprecation warning.
+        # </summary>
+        permissions:
+            contents: write
+        env:
+            FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
         steps:
-            # <summary>
-            # Checks out the repository code.
-            # </summary>
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            # <summary>
-            # Sets up Node.js environment using version 24 and configures npm caching.
-            # </summary>
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: 24
                   cache: 'npm'
 
-            # <summary>
-            # Installs dependencies exactly as specified in package-lock.json.
-            # </summary>
             - name: Install dependencies
               run: npm ci
 
-            # <summary>
-            # Executes the publish script to deploy the One-Click Apps.
-            # Uses the automatically generated GITHUB_TOKEN instead of a personal one.
-            # </summary>
             - name: Publish Apps
               run: npm run publish
               env:
-                  GITHUB_PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_PERSONAL_TOKEN: x-access-token:${{ secrets.GITHUB_TOKEN }}
