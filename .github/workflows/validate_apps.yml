@@ -1,26 +1,48 @@
 # <summary>
-# GitHub Actions workflow that validates CapRover One-Click Apps.
-# Triggers on push and pull_request events targeting the 'master' branch.
-# Uses up-to-date action versions (v4) and Node.js v20 for execution.
+# Refined GitHub Actions workflow for validating CapRover One-Click Apps.
+# Corrects the original repository's outdated v1 actions and poorly named 'build' job.
+# Automatically installs npm via setup-node and uses 'npm ci' to install dependencies.
 # </summary>
 name: Validate One Click Apps
 
 on:
     push:
-        branches:
+        branches: 
             - master
     pull_request:
-        branches:
+        branches: 
             - master
 
 jobs:
-    build:
+    validate:
         runs-on: ubuntu-latest
+
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            # <summary>
+            # Checks out the repository code.
+            # </summary>
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            # <summary>
+            # Sets up Node.js v20. This automatically includes the 'npm' package manager.
+            # </summary>
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
               with:
                   node-version: 20
-            - run: npm ci && npm run validate_apps && npm run formatter
+                  cache: 'npm'
+
+            # <summary>
+            # Installs dependencies exactly as specified in package-lock.json using Clean Install.
+            # </summary>
+            - name: Install dependencies
+              run: npm ci
+
+            # <summary>
+            # Executes the validation script.
+            # </summary>
+            - name: Validate Apps
+              run: npm run validate_apps && npm run formatter
               env:
                   GITHUB_PERSONAL_TOKEN: ${{secrets.GITHUB_PERSONAL_TOKEN}}
