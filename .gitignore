@@ -1,5 +1,48 @@
 
+# Node / pnpm
 dist/*
 node_modules
-.DS_Store
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.userosscache
+*.sln.ide
+*.cache
+*.dbmdl
+
+# JetBrains (Rider, IntelliJ, PhpStorm, WebStorm, PyCharm)
 .idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+.idea/*_workspace.xml
+.idea/*tasks.xml
+.idea/dictionaries/
+.idea/vcs.xml
+.idea/shelf/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Optional: temp files
+*.tmp
+*.swp
+*.swo
