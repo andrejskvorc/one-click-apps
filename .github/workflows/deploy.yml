@@ -1,7 +1,7 @@
 # <summary>
 # GitHub Actions workflow for publishing CapRover One-Click Apps.
-# Modernized to use Node.js 24 and v4 actions to prevent deprecation warnings.
-# Includes workflow_dispatch for manual triggering.
+# Modernized to Node.js 24, includes manual trigger, and grants explicit write permissions
+# so the internal bash script can push to the gh-pages branch using the default GITHUB_TOKEN.
 # </summary>
 name: Publish One Click Apps
 
@@ -16,6 +16,13 @@ on:
 # </summary>
 env:
     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# <summary>
+# Explicitly grants write permissions to the repository contents.
+# This is required for the bash script to successfully push the generated files.
+# </summary>
+permissions:
+    contents: write
 
 jobs:
     publish:
@@ -45,6 +52,7 @@ jobs:
 
             # <summary>
             # Executes the publish script to deploy the One-Click Apps.
+            # Uses the automatically generated GITHUB_TOKEN instead of a personal one.
             # </summary>
             - name: Publish Apps
               run: npm run publish
