@@ -1,17 +1,52 @@
+# <summary>
+# GitHub Actions workflow for publishing CapRover One-Click Apps.
+# Modernized to use Node.js 24 and v4 actions to prevent deprecation warnings.
+# Includes workflow_dispatch for manual triggering.
+# </summary>
 name: Publish One Click Apps
 
 on:
     push:
-        branches: [master]
+        branches:
+            - master
+    workflow_dispatch:
+
+# <summary>
+# Forces underlying GitHub Actions to use Node.js 24.
+# </summary>
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-    build:
+    publish:
         runs-on: ubuntu-latest
+
         steps:
-            - uses: actions/checkout@v1
-            - uses: actions/setup-node@v1
+            # <summary>
+            # Checks out the repository code.
+            # </summary>
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            # <summary>
+            # Sets up Node.js environment using version 24 and configures npm caching.
+            # </summary>
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
               with:
-                  node-version: 20
-            - run: npm ci && npm run publish
+                  node-version: 24
+                  cache: 'npm'
+
+            # <summary>
+            # Installs dependencies exactly as specified in package-lock.json.
+            # </summary>
+            - name: Install dependencies
+              run: npm ci
+
+            # <summary>
+            # Executes the publish script to deploy the One-Click Apps.
+            # </summary>
+            - name: Publish Apps
+              run: npm run publish
               env:
-                  GITHUB_PERSONAL_TOKEN: ${{secrets.GITHUB_PERSONAL_TOKEN}}
+                  GITHUB_PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
