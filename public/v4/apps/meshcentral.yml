@@ -1,24 +1,34 @@
 # <summary>
-# CapRover One-Click App configuration for a standalone MeshCentral server.
-# Uses the built-in NeDB database for a simpler, single-container deployment.
+# Standalone MeshCentral deployment for CapRover.
+# Optimized for Nginx Reverse Proxy with automated SSL certificate fetching via CERTURL.
+# Starts with 0 instances to allow manual configuration of HTTPS and WebSockets.
 # </summary>
 captainVersion: 4
 
 services:
     # <summary>
-    # Main MeshCentral web application and agent server.
+    # Main MeshCentral web application container.
     # </summary>
     $$cap_appname:
         image: ghcr.io/ylianst/meshcentral:latest
+        # <summary>Starts with 0 instances so you can enable HTTPS first</summary>
+        instanceCount: 0
         environment:
             NODE_ENV: 'production'
-            # <summary>Forces MeshCentral to override config.json with env variables</summary>
             DYNAMIC_CONFIG: 'true'
             HOSTNAME: '$$cap_appname.$$cap_root_domain'
-            # <summary>Trusts local network IPs to allow CapRover Nginx routing</summary>
-            REVERSE_PROXY: '10.0.0.0/8,172.16.0.0/12,192.168.0.0/16'
+
+            # <summary>Fetches the public Let's Encrypt cert from CapRover automatically</summary>
+            CERTURL: 'https://$$cap_appname.$$cap_root_domain'
+
+            # <summary>Standard proxy settings for CapRover Nginx</summary>
+            REVERSE_PROXY: 'true'
             REVERSE_PROXY_TLS_PORT: '443'
-            # <summary>Explicitly disables MongoDB to use the default internal database</summary>
+
+            # <summary>Internal port 80 to match Nginx default forwarding</summary>
+            PORT: '80'
+            TLSOFFLOAD: 'true'
+
             USE_MONGODB: 'false'
             ADMIN_ACCOUNT: '$$cap_admin_user'
             ADMIN_PASSWORD: '$$cap_admin_pass'
@@ -34,9 +44,9 @@ volumes:
     $$cap_appname-backup:
 
 caproverOneClickApp:
-    displayName: 'MeshCentral Standalone'
-    description: 'Deploy a lightweight, standalone MeshCentral server with its default built-in database.'
-    documentation: 'https://github.com/Ylianst/MeshCentral'
+    displayName: 'MeshCentral (Nginx SSL Optimized)'
+    description: 'Standalone MeshCentral server starting in a safe stopped state for SSL configuration.'
+    documentation: 'https://meshcentral.com/docs/MeshCentral2UserGuide.pdf'
     variables:
         - id: '$$cap_admin_user'
           label: 'Admin username'
@@ -48,11 +58,14 @@ caproverOneClickApp:
           validRegex: '/^.+$/'
     instructions:
         start: >-
-            This sets up a single-container MeshCentral instance using the built-in database.
+            This app will be created but NOT started. This allows you to set up SSL and WebSockets safely.
         end: >-
-            IMPORTANT NEXT STEPS:
-            1. Go to your CapRover Apps dashboard and select this app.
-            2. Under HTTP Settings, change the "Container HTTP Port" from 80 to 443.
-            3. Click "Enable HTTPS".
-            4. Check "Enable WebSocket Support" and "Force HTTPS".
-            5. Click "Save & Update".
+            APP CREATED SUCCESSFULLY (NEXT STEPS):
+            1. Go to Apps > $$cap_appname > HTTP Settings.
+            2. Click "Enable HTTPS" and check "Force HTTPS".
+            3. Check "Enable WebSocket Support".
+            4. Ensure "Container HTTP Port" is set to 80.
+            5. Go to "App Configs" tab.
+            6. Change "Deployment Instance Count" from 0 to 1.
+            7. Click "Save & Update". 
+            Your MeshCentral will now start with the correct Let's Encrypt certificates.
