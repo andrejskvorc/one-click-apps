@@ -1,12 +1,12 @@
 # <summary>
-# CapRover One-Click App configuration for MeshCentral and MongoDB.
-# Formatted and optimized for reverse proxy environments.
+# CapRover One-Click App deployment script for MeshCentral with MongoDB.
+# Fully utilizes dynamic configuration to ensure accurate reverse proxy setup.
 # </summary>
 captainVersion: 4
 
 services:
     # <summary>
-    # Main MeshCentral web application and agent server.
+    # MeshCentral application container.
     # </summary>
     $$cap_appname:
         image: ghcr.io/ylianst/meshcentral:latest
@@ -14,9 +14,12 @@ services:
             - $$cap_appname-mongo
         environment:
             NODE_ENV: 'production'
+            # <summary>Forces MeshCentral to override config.json with env variables</summary>
+            DYNAMIC_CONFIG: 'true'
             HOSTNAME: '$$cap_appname.$$cap_root_domain'
             REVERSE_PROXY: 'true'
             REVERSE_PROXY_TLS_PORT: '443'
+            USE_MONGODB: 'true'
             MONGO_URL: 'mongodb://$$cap_appname-mongo:27017/meshcentral'
             ADMIN_ACCOUNT: '$$cap_admin_user'
             ADMIN_PASSWORD: '$$cap_admin_pass'
@@ -27,7 +30,7 @@ services:
         restart: always
 
     # <summary>
-    # MongoDB database for persistent MeshCentral data storage.
+    # MongoDB backend database container.
     # </summary>
     $$cap_appname-mongo:
         image: mongo:7
@@ -58,7 +61,11 @@ caproverOneClickApp:
           validRegex: '/^.+$/'
     instructions:
         start: >-
-            This sets up MeshCentral with a local MongoDB instance for persistent data storage.
+            This sets up MeshCentral with a local MongoDB instance.
         end: >-
-            MeshCentral is deployed at https://$$cap_appname.$$cap_root_domain. 
-            Important: Ensure you enable HTTPS in the CapRover dashboard for this app before logging in.
+            IMPORTANT NEXT STEPS:
+            1. Go to your CapRover Apps dashboard and select this app.
+            2. Under HTTP Settings, click "Enable HTTPS".
+            3. Check "Enable WebSocket Support" and "Force HTTPS".
+            4. Click "Save & Update". 
+            MeshCentral will not function correctly without WebSockets enabled!
