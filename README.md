@@ -109,9 +109,12 @@ To set up your private repository on CapRover:
 In order to add a third party repository:
 -   Login to your CapRover dashboard
 -   Go to **apps** and click on **One-Click Apps/Databases** and scrolldown to the bottom
--   Under **3rd party repositories:** copy  the URL, (for example: `https://Awes0meHub.github.io/caprover-one-click-apps`) and paste it in to the text box
+-   Under **3rd party repositories:** copy  the URL, (for example: `https://oneclickapps.skvorc.dev`) and paste it in to the text box
 -   Click the **_Connect New Repository_** button
 
 #### 3rd party repositories
+This one
+-   Andrej Škvorc: [Github](https://github.com/andrejskvorc/one-click-apps) repository: `https://oneclickapps.skvorc.dev`
+Others
 -   Awes0meHub: [Github](https://github.com/caproverhub/caprover-one-click-apps) repository: `https://caproverhub.github.io/caprover-one-click-apps`
 -   Jordan-hall: [Github](https://github.com/Jordan-Hall/caprover-one-click-apps) repository: `https://oneclickapps.libertyware.io`
