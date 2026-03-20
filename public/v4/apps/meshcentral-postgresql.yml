@@ -60,7 +60,6 @@ services:
     # </summary>
     $$cap_appname-db:
         image: postgres:15-alpine
-        notExposeAsWebApp: true
         environment:
             POSTGRES_USER: 'meshuser'
             POSTGRES_PASSWORD: '$$cap_db_pass'
@@ -68,6 +67,8 @@ services:
         volumes:
             - $$cap_appname-db-data:/var/lib/postgresql/data
         restart: always
+        caproverExtra:
+            notExposeAsWebApp: 'true'
 
 # <summary>
 # Persistent Volumes Definition

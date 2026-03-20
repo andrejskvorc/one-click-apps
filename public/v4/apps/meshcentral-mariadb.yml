@@ -60,7 +60,6 @@ services:
     # </summary>
     $$cap_appname-db:
         image: mariadb:10.11
-        notExposeAsWebApp: true
         environment:
             MARIADB_USER: 'meshuser'
             MARIADB_PASSWORD: '$$cap_db_pass'
@@ -69,6 +68,8 @@ services:
         volumes:
             - $$cap_appname-db-data:/var/lib/mysql
         restart: always
+        caproverExtra:
+            notExposeAsWebApp: 'true'
 
 # <summary>
 # Persistent Volumes Definition

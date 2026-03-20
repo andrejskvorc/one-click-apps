@@ -38,7 +38,7 @@ services:
             # --- DATABASE CONNECTION (HIDDEN FROM USER PROMPT) ---
             # Ovdje smo zakucali vrijednosti, korisnik ih ne unosi!
             USE_MONGODB: 'true'
-            MONGO_HOST: 'srv-captain--$$cap_appname-db'
+            MONGO_HOST: 'mongodb://meshuser:$$cap_db_pass@srv-captain--$$cap_appname-db:27017/meshcentral'
             MONGO_PORT: '27017'
             MONGO_USERNAME: 'meshuser'
             MONGO_PASS: '$$cap_db_pass'
@@ -54,7 +54,6 @@ services:
     # </summary>
     $$cap_appname-db:
         image: mongo:6.0
-        notExposeAsWebApp: true
         environment:
             # Kreiranje korisnika pri prvom bootu baze
             MONGO_INITDB_ROOT_USERNAME: 'meshuser'
@@ -62,6 +61,8 @@ services:
         volumes:
             - $$cap_appname-db-data:/data/db
         restart: always
+        caproverExtra:
+            notExposeAsWebApp: 'true'
 
 # <summary>
 # Persistent Volumes Definition
