@@ -16,6 +16,11 @@ services:
             NODE_ENV: 'production'
             DYNAMIC_CONFIG: 'true'
 
+            # Naslovi i Sesija
+            TITLE: '$$cap_title'
+            TITLE2: '$$cap_title2'
+            SESSION_KEY: '$$cap_session_key'
+
             # 1. Domena
             HOSTNAME: '$$cap_appname.$$cap_root_domain'
 
@@ -49,9 +54,22 @@ volumes:
     $$cap_appname-backup:
 
 caproverOneClickApp:
-    displayName: 'MeshCentral (Skvorc Custom)'
-    description: 'Custom MeshCentral server optimized for CapRover with automatic Admin provisioning.'
+    displayName: 'MeshCentral - Simple install'
+    description: 'Custom MeshCentral server optimized for CapRover with automatic Admin provisioning from fixed and recompiled docker image pulled from Docker HUB. Fork of meshcentral -> https://github.com/andrejskvorc/MeshCentral .'
     variables:
+        - id: '$$cap_title'
+          label: 'Site Title'
+          defaultValue: 'MyServer'
+          validRegex: '/^.+$/'
+        - id: '$$cap_title2'
+          label: 'Site Subtitle'
+          defaultValue: 'Remote Management'
+          validRegex: '/^.+$/'
+        - id: '$$cap_session_key'
+          label: 'Session Key (Secret)'
+          description: 'Type a long, random string (like a password) used to encrypt web cookies. Save it somewhere safe! Leave EMPTY to auto-generate a secure random key.'
+          defaultValue: ''
+          validRegex: '/^.+$/'
         - id: '$$cap_admin_user'
           label: 'Admin username'
           defaultValue: 'admin'
