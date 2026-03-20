@@ -77,7 +77,7 @@ volumes:
 # CapRover App Configuration and User Prompts
 # </summary>
 caproverOneClickApp:
-    displayName: 'MeshCentral + MongoDB (Bundle)'
+    displayName: 'MeshCentral + MongoDB (Bundle) - debuging not working'
     description: 'Deploys MeshCentral along with a dedicated MongoDB backend for high performance and scalability.'
     variables:
         - id: '$$cap_title'
