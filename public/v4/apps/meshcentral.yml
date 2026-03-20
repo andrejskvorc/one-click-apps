@@ -1,6 +1,6 @@
 # <summary>
 # Standalone MeshCentral deployment using a custom Docker image.
-# Fully optimized for CapRover Nginx with automated TLS Offloading and Admin creation.
+# Fully optimized for CapRover Nginx with automated TLS Offloading, Admin creation, and Nginx timeout instructions.
 # </summary>
 captainVersion: 4
 
@@ -11,27 +11,28 @@ services:
     $$cap_appname:
         image: andrejskvorc/meshcentral:caprover
 
-        # <summary>Starts with 0 instances to allow manual HTTPS setup first</summary>
         instanceCount: 0
         environment:
             NODE_ENV: 'production'
             DYNAMIC_CONFIG: 'true'
 
-            # 1. Domena i Certifikati
+            # 1. Domena
             HOSTNAME: '$$cap_appname.$$cap_root_domain'
-            CERTURL: 'https://$$cap_appname.$$cap_root_domain'
 
-            # 2. Portovi (Interni i Vanjski)
+            # 2. Portovi (Važno: PORT 80 za internu komunikaciju s Nginxom)
             PORT: '80'
             REDIR_PORT: '81'
             ALIASPORT: '443'
             REDIRALIASPORT: '80'
 
-            # 3. Proxy i TLS Offload postavke
-            REVERSE_PROXY: 'true'
+            # 3. Proxy postavke (Ovo generira ispravan certUrl!)
+            REVERSE_PROXY: 'https://$$cap_appname.$$cap_root_domain'
+            REVERSE_PROXY_TLS_PORT: '443'
+
+            # 4. TLS Offload
             TLSOFFLOAD: '10.0.0.0/8,172.16.0.0/12,192.168.0.0/16'
 
-            # 4. Baza i Admin korisnik
+            # 5. Baza i Admin korisnik
             USE_MONGODB: 'false'
             ADMIN_ACCOUNT: '$$cap_admin_user'
             ADMIN_PASSWORD: '$$cap_admin_pass'
@@ -61,13 +62,18 @@ caproverOneClickApp:
           validRegex: '/^.+$/'
     instructions:
         start: >-
-            This app uses your custom Docker image. It will be created but NOT started to allow SSL setup.
+            This app uses your custom Docker image. It will be created but NOT started to allow SSL and Nginx setup.
         end: >-
-            APP CREATED SUCCESSFULLY (NEXT STEPS):
+            APP CREATED SUCCESSFULLY (CRITICAL NEXT STEPS):
             1. Go to Apps > $$cap_appname > HTTP Settings.
             2. Click "Enable HTTPS" and check "Force HTTPS".
             3. Check "Enable WebSocket Support".
             4. Ensure "Container HTTP Port" is set to 80.
-            5. Go to "App Configs" tab.
-            6. Change "Deployment Instance Count" from 0 to 1.
-            7. Click "Save & Update".
+            5. IMPORTANT FOR REMOTE DESKTOP: Click "Edit Default Nginx Configurations".
+            6. Find the line `proxy_pass $upstream;` and add these two lines right below it:
+               proxy_read_timeout 3600s;
+               proxy_send_timeout 3600s;
+            7. Click Save for the Nginx config.
+            8. Go to "App Configs" tab.
+            9. Change "Deployment Instance Count" from 0 to 1.
+            10. Click "Save & Update".
