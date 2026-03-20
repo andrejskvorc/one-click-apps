@@ -69,7 +69,6 @@ caproverOneClickApp:
           label: 'Session Key (Secret)'
           description: 'Type a long, random string (like a password) used to encrypt web cookies. Save it somewhere safe! Leave EMPTY to auto-generate a secure random key.'
           defaultValue: ''
-          validRegex: '/^.+$/'
         - id: '$$cap_admin_user'
           label: 'Admin username'
           defaultValue: 'admin'
@@ -86,7 +85,7 @@ caproverOneClickApp:
             1. Go to Apps > $$cap_appname > HTTP Settings.
             2. Click "Enable HTTPS" and check "Force HTTPS".
             3. Check "Enable WebSocket Support".
-            4. Ensure "Container HTTP Port" is set to 80.
+            4. Ensure "Container HTTP Port" is set to 80!!!! If it does not work at 80, change to 443.
             5. IMPORTANT FOR REMOTE DESKTOP: Click "Edit Default Nginx Configurations".
             6. Find the line `proxy_pass $upstream;` and add these two lines right below it:
                proxy_read_timeout 3600s;
