@@ -60,6 +60,7 @@ services:
     # </summary>
     $$cap_appname-db:
         image: postgres:15-alpine
+        notExposeAsWebApp: true
         environment:
             POSTGRES_USER: 'meshuser'
             POSTGRES_PASSWORD: '$$cap_db_pass'

@@ -54,6 +54,7 @@ services:
     # </summary>
     $$cap_appname-db:
         image: mongo:6.0
+        notExposeAsWebApp: true
         environment:
             # Kreiranje korisnika pri prvom bootu baze
             MONGO_INITDB_ROOT_USERNAME: 'meshuser'
