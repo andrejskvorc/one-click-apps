@@ -83,7 +83,7 @@ volumes:
 # CapRover App Configuration and User Prompts
 # </summary>
 caproverOneClickApp:
-    displayName: 'MeshCentral + PostgreSQL (Bundle) - working'
+    displayName: 'MeshCentral + PostgreSQL (Bundle)'
     description: 'Deploys MeshCentral along with a dedicated PostgreSQL backend.'
     variables:
         - id: '$$cap_title'

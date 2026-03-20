@@ -84,7 +84,7 @@ volumes:
 # CapRover App Configuration and User Prompts
 # </summary>
 caproverOneClickApp:
-    displayName: 'MeshCentral + MariaDB (Bundle) - working'
+    displayName: 'MeshCentral + MariaDB (Bundle)'
     description: 'Deploys MeshCentral along with a dedicated MariaDB backend.'
     variables:
         - id: '$$cap_title'

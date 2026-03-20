@@ -55,7 +55,7 @@ volumes:
     $$cap_appname-backup:
 
 caproverOneClickApp:
-    displayName: 'MeshCentral - Simple install - working'
+    displayName: 'MeshCentral - Simple install'
     description: 'Custom MeshCentral server optimized for CapRover with automatic Admin provisioning from fixed and recompiled docker image pulled from Docker HUB.'
     variables:
         - id: '$$cap_title'
