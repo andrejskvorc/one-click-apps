@@ -3,13 +3,14 @@ const path = require('path');
 const yaml = require('yaml');
 
 /// <summary>
-/// Scans the built dist/v4/apps directory for YAML files, parses them, 
-/// and generates the main index.html file in the dist directory.
+/// Scans the original public/v4/apps directory for YAML files, parses them, 
+/// and generates the main index.html file in the dist directory for publishing.
 /// </summary>
 function generateRepositoryPage() {
-    const distDir = path.join(__dirname, '..', 'dist');
-    const appsDir = path.join(distDir, 'v4', 'apps');
-    const outputPath = path.join(distDir, 'index.html');
+    // Čitamo iz ORIGINALNOG public foldera gdje su .yml datoteke netaknute
+    const appsDir = path.join(__dirname, '..', 'public', 'v4', 'apps');
+    // Spremamo u DIST folder koji ide na GitHub Pages
+    const outputPath = path.join(__dirname, '..', 'dist', 'index.html');
 
     let htmlContent = `
 <!DOCTYPE html>
@@ -61,7 +62,7 @@ function generateRepositoryPage() {
     `;
 
     // <summary>
-    // Iterate over parsed V4 YAML files and build HTML cards
+    // Iterate over V4 YAML files in the PUBLIC directory and build HTML cards
     // </summary>
     if (fs.existsSync(appsDir)) {
         const files = fs.readdirSync(appsDir);
@@ -78,7 +79,7 @@ function generateRepositoryPage() {
 
                     const appName = appData.displayName || baseName;
                     const appDesc = appData.description || 'No description provided.';
-                    const logoPath = `v4/logos/${baseName}.png`;
+                    const logoPath = `v4/logos/${baseName}.png`; // Putanja ostaje ista jer se logotipi kopiraju u dist
 
                     htmlContent += `
                     <div class="app-card">
@@ -102,9 +103,6 @@ function generateRepositoryPage() {
 </html>
     `;
 
-    // <summary>
-    // Save the finalized HTML to the dist folder for deployment
-    // </summary>
     fs.writeFileSync(outputPath, htmlContent, 'utf8');
     console.log("Success: Generated index.html in the dist directory.");
 }
