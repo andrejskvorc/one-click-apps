@@ -83,7 +83,6 @@ sleep 1s
 git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 echo $(date) >>forcebuild.date
-echo "caprover.com" >index.html
 git add -A
 git commit -m 'Deploy to GitHub Pages'
 git push $REMOTE_REPO $REMOTE_BRANCH:$REMOTE_BRANCH
