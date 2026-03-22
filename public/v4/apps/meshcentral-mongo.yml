@@ -36,12 +36,12 @@ services:
             TLSOFFLOAD: '10.0.0.0/8,172.16.0.0/12,192.168.0.0/16'
 
             # --- DATABASE CONNECTION (HIDDEN FROM USER PROMPT) ---
-            # Ovdje smo zakucali vrijednosti, korisnik ih ne unosi!
             USE_MONGODB: 'true'
             MONGO_HOST: 'srv-captain--$$cap_appname-db'
-            MONGO_PORT: '27017/meshcentral?authSource=admin'
-            MONGO_USERNAME: 'mongodb://meshuser'
+            MONGO_PORT: '27017'
+            MONGO_USERNAME: 'meshuser'
             MONGO_PASS: '$$cap_db_pass'
+            MONGO_DATABASE: 'meshcentral'
 
         volumes:
             - $$cap_appname-data:/opt/meshcentral/meshcentral-data
