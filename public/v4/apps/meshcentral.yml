@@ -95,3 +95,6 @@ caproverOneClickApp:
             8. Open port on your firewall for 4433 (Intel AMT needs this port for remote desktop connections) eg. ufw allow 4433/tcp
             9. If you want to use a custom domain, first connect it under HTTP Settings, and then ensure that the HOSTNAME and REVERSE_PROXY environment variable matches that domain exactly.
             10. Click "Save & Restart".
+
+            TO UPDATE THIS APP IN THE FUTURE:
+            Go to the Deployment tab, scroll down to "Method 6: Deploy via ImageName", enter "andrejskvorc/meshcentral:caprover" and click Deploy.
