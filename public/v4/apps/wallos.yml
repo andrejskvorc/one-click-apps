@@ -10,12 +10,11 @@ services:
         volumes:
             - $$cap_appname-db-data:/var/www/html/db
             - $$cap_appname-logos-data:/var/www/html/images/uploads/logos
-            - $$cap_appname-license.md)-data://github.com/ellite/Wallos/raw/main/LICENSE.md)
 volumes:
     $$cap_appname-db-data:
     $$cap_appname-logos-data:
-    $$cap_appname-license.md)-data:
 caproverOneClickApp:
+    variables: []
     instructions:
         start: >-
             Deploying Wallos.
