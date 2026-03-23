@@ -59,7 +59,7 @@ services:
     # 2. Dedicated MariaDB Container
     # </summary>
     $$cap_appname-db:
-        image: mariadb:10.11
+        image: mariadb:latest
         environment:
             MARIADB_USER: 'meshuser'
             MARIADB_PASSWORD: '$$cap_db_pass'
