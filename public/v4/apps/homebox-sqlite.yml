@@ -35,11 +35,25 @@ caproverOneClickApp:
             APP CREATED SUCCESSFULLY (NEXT STEPS):
 
             1. Go to Apps > $$cap_appname > HTTP Settings.
-            2. Enable HTTPS and Force HTTPS.
-            3. Ensure Container HTTP Port is set to 7745.
-            4. Click Save & Restart.
 
-            Homebox is now running with SQLite storage.
+            2. Enable HTTPS and Force HTTPS.
+
+            3. Ensure Container HTTP Port is set to 7745.
+
+            4. Access Homebox at '$$cap_appname.$$cap_root_domain'.
+
+            5. To create your first user:
+               - Go to Apps > $$cap_appname > App Configurations
+               - Set HBOX_OPTIONS_ALLOW_REGISTRATION to true
+               - Click Save & Restart
+               - Register your first account
+
+            6. (Optional - recommended)
+               After creating your account:
+               - Set HBOX_OPTIONS_ALLOW_REGISTRATION back to false
+               - Save & Restart
+
+               IMPORTANT: If registration is disabled before creating a user, you will not be able to access the app.
 
     displayName: 'Homebox (SQLite)'
     isOfficial: false
