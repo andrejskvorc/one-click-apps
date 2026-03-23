@@ -1,10 +1,12 @@
 # <summary>
-# Auto-generated CapRover template for Bookstack
+# Auto-generated CapRover template for Bookstack with MariaDB
 # </summary>
 captainVersion: 4
 services:
     $$cap_appname:
         image: linuxserver/bookstack:latest
+        depends_on:
+            - $$cap_appname-db
         environment:
             PHP_INI_SCAN_DIR: '$$cap_php_ini_scan_dir'
             PUID: '$$cap_puid'
@@ -21,8 +23,21 @@ services:
             UMASK: '$$cap_umask'
         volumes:
             - $$cap_appname-config:/config
+    $$cap_appname-db:
+        environment:
+            MYSQL_ROOT_PASSWORD: '$$cap_db_password'
+            MYSQL_DATABASE: '$$cap_db_name'
+            MYSQL_USER: '$$cap_db_user'
+            MYSQL_PASSWORD: '$$cap_db_password'
+        image: mariadb:latest
+        volumes:
+            - $$cap_appname-db-data:/var/lib/mysql
+        restart: always
+        caproverExtra:
+            notExposeAsWebApp: 'true'
 volumes:
     $$cap_appname-config:
+    $$cap_appname-db-data:
 caproverOneClickApp:
     variables:
         - id: '$$cap_php_ini_scan_dir'
@@ -52,7 +67,7 @@ caproverOneClickApp:
           validRegex: ''
         - id: '$$cap_db_host'
           label: 'DB_HOST'
-          defaultValue: '-'
+          defaultValue: 'srv-captain--$$cap_appname-db'
           description: 'Configuration for DB_HOST'
           validRegex: ''
         - id: '$$cap_db_port'
@@ -90,12 +105,21 @@ caproverOneClickApp:
           defaultValue: '022`'
           description: 'Configuration for UMASK'
           validRegex: ''
+        - id: '$$cap_db_user'
+          label: 'Database User'
+          defaultValue: 'my_user'
+        - id: '$$cap_db_password'
+          label: 'Database Password'
+          defaultValue: '$$cap_gen_random_hex(16)'
+        - id: '$$cap_db_name'
+          label: 'Database Name'
+          defaultValue: 'my_database'
     instructions:
         start: >-
-            Deploying Bookstack.
+            Deploying Bookstack with MariaDB.
         end: >-
-            Bookstack is successfully deployed!
-    displayName: 'Bookstack'
+            Bookstack with MariaDB is successfully deployed!
+    displayName: 'Bookstack with MariaDB'
     isOfficial: true
     description: ' (Supported Architectures: amd64, arm64)'
     documentation: 'Taken from Docker Hub'
