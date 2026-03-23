@@ -12,6 +12,7 @@ services:
             HBOX_STORAGE_CONN_STRING: 'file:///data?no_tmp_dir=true'
             HBOX_STORAGE_PREFIX_PATH: 'files'
             HBOX_DATABASE_SQLITE_PATH: '/data/homebox.db?_pragma=busy_timeout=2000&_pragma=journal_mode=WAL&_fk=1&_time_format=sqlite'
+            HBOX_OPTIONS_ALLOW_REGISTRATION: 'false'
         volumes:
             - $$cap_appname-data:/data
         restart: always
